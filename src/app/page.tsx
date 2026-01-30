@@ -1,19 +1,16 @@
-import Link from "next/link";
+import HomeContent from "@/components/home-content";
+import { InspectorPanel } from "@/components/layout/InspectorPanel";
+import { Sidebar } from "@/components/layout/Sidebar";
 
 export default function Home() {
   return (
-    <main className="container">
-      <section className="panel" style={{ gridColumn: "1 / -1" }}>
-        <div className="panelHeader">
-          <h1 className="h1">Playwright Beginner Playground</h1>
-          <p className="small">Start with Session 1 — Locator Finding</p>
-        </div>
-        <div className="panelBody">
-          <Link className="btn btnPrimary" href="/sessions/session-1-locators">
-            Go to Session 1
-          </Link>
-        </div>
-      </section>
-    </main>
-  );
+      <main className="container">
+        {/* <HeroHeader /> */}
+        <Sidebar activeHref="/sessions/session-1-locators" />
+        <HomeContent />
+        <InspectorPanel hint={null} />
+      </main>
+    );
 }
+
+
