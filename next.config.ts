@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
+const repo = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const basePath = process.env.BASE_PATH ?? (repo ? `/${repo}` : "");
+
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  output: "export",
+  images: { unoptimized: true },
+  basePath,
+  assetPrefix: basePath,
+  trailingSlash: true,
 };
 
 export default nextConfig;
