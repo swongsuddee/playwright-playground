@@ -152,8 +152,9 @@ export function Practice23() {
               <td>❌ No</td>
               <td>❌ No</td>
               <td>
-                <code>textContent()</code> can still read text,
-                <code>innerText()</code> returns empty
+                <code>textContent()</code> can still read text,<br />
+                <code>innerText()</code> <b>behavior can vary by browser and rendering engine.</b><br /><br />
+                For visibility assertions, always prefer <code>toBeVisible()</code> / <code>toBeHidden()</code>.
               </td>
             </tr>
 
