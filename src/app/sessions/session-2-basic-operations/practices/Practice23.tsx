@@ -60,29 +60,31 @@ export function Practice23() {
             <div className="small">Hidden text (DOM only)</div>
             <ul style={{ paddingLeft: 20, marginTop: 6 }}>
               <li>
+                display: none → 
                 <span
                   data-testid="display-none-text"
                   style={{ display: "none" }}
                 >
-                  display: none → element is removed from layout and not visible to the user
+                  element is removed from layout and not visible to the user
                 </span>
               </li>
 
               <li>
+                opacity: 0 → 
                 <span
                   data-testid="muted-opacity-text"
-                  className="muted"
+                  style={ { opacity: 0}}
                 >
-                  opacity: 0 → element still exists in layout but fully transparent
+                  element still exists in layout but fully transparent
                 </span>
               </li>
-
               <li>
+                visibility: hidden → 
                 <span
                   data-testid="visibility-hidden-text"
                   style={{ visibility: "hidden" }}
                 >
-                  visibility: hidden → element keeps its space but text is invisible
+                  element keeps its space but text is invisible
                 </span>
               </li>
             </ul>
@@ -127,6 +129,59 @@ export function Practice23() {
         </div>
       </div>
 
+      <div
+        className="card"
+        style={{
+          padding: 12,
+          gridTemplateColumns: "1fr 1fr",
+          gap: 12,
+        }}
+      >
+        <table className="table">
+          <thead>
+            <tr>
+              <th>CSS Style</th>
+              <th>Visible to User</th>
+              <th>Takes Layout Space</th>
+              <th>Playwright Testing Insight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>display: none</code></td>
+              <td>❌ No</td>
+              <td>❌ No</td>
+              <td>
+                <code>textContent()</code> can still read text,
+                <code>innerText()</code> returns empty
+              </td>
+            </tr>
+
+            <tr>
+              <td><code>opacity: 0</code></td>
+              <td>❌ No</td>
+              <td>✅ Yes</td>
+              <td>
+                Element exists in DOM and layout,
+                visibility assertions may still pass
+              </td>
+            </tr>
+
+            <tr>
+              <td><code>visibility: hidden</code></td>
+              <td>❌ No</td>
+              <td>✅ Yes</td>
+              <td>
+                Layout is preserved,
+                <code>textContent()</code> still returns text
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      
       <CodeBox
         code={`// Plain visible text
 await page.getByTestId('btn-inc').click();
