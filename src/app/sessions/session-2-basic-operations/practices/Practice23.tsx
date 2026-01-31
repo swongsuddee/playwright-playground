@@ -58,10 +58,17 @@ export function Practice23() {
           {/* Hidden text */}
           <div className="card" style={{ padding: 12 }}>
             <div className="small">Hidden text (DOM only)</div>
-            <span data-testid="hidden-text" style={{ display: "none" }}>
-              secret-token-123
-            </span>
-            <div className="muted">Not visible to user</div>
+            <ul style={{ paddingLeft: 20, marginTop: 6 }}>
+              <li>
+                <span data-testid="hidden-text" style={{ display: "none" }}> secret-token-123</span>
+              </li>
+              <li>
+                <span data-testid="muted-text" className="muted">Not visible to user</span>
+              </li>
+              <li>
+                <span data-testid="visibility-hidden-text" style={ { visibility: "hidden"}}> Hidden content </span>
+              </li>
+            </ul>
           </div>
         </div>
 
