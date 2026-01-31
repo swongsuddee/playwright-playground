@@ -204,55 +204,7 @@ export function PracticeScrollIntoView() {
         <div ref={sentinelRef} data-testid="sentinel" style={{ height: 1, marginTop: 1 }} />
       </div>
 
-      {/* Bottom Area */}
-      <div className="card" style={{ padding: 12 }}>
-        <div style={{ fontWeight: 800 }}>Bottom Area</div>
-        <div className="small" style={{ marginTop: 6, opacity: 0.8 }}>
-          Learners should scroll to this button (or use scrollIntoViewIfNeeded) before clicking.
-        </div>
-
-        <div style={{ marginTop: 12, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-          <button
-            ref={acceptBtnRef}
-            data-testid="btn-accept"
-            className="btnPrimary"
-            disabled={!acceptInView || accepted}
-            onClick={() => setAccepted(true)}
-            style={{
-              opacity: !acceptInView || accepted ? 0.6 : 1,
-              cursor: !acceptInView || accepted ? "not-allowed" : "pointer",
-            }}
-            title={!acceptInView ? "Scroll me into view first" : accepted ? "Already accepted" : "Click to accept"}
-          >
-            Accept Terms
-          </button>
-
-          <button
-            data-testid="btn-scroll-to-accept"
-            className="btn"
-            onClick={() => acceptBtnRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })}
-          >
-            Scroll to Accept (helper)
-          </button>
-
-          <button data-testid="btn-reset" className="btn" onClick={() => setAccepted(false)}>
-            Reset
-          </button>
-        </div>
-
-        {accepted ? (
-          <div
-            data-testid="accept-toast"
-            className="card"
-            style={{ marginTop: 12, padding: 12, background: "rgba(0, 200, 120, 0.10)" }}
-          >
-            <div style={{ fontWeight: 900 }}>✅ Terms accepted</div>
-            <div className="small" style={{ opacity: 0.8 }}>
-              In tests: assert toast visible and accepted-state == YES
-            </div>
-          </div>
-        ) : null}
-      </div>
+      
     </div>
   );
 }
