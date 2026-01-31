@@ -1,8 +1,8 @@
-// src/components/layout/Sidebar.tsx
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 
 type Child = { href: string; title: string };
 
@@ -34,169 +34,200 @@ const sessions: Session[] = [
       { title: "2.7 Toggle Button (Custom UI)", href: "/sessions/session-2-basic-operations#2-7" },
       { title: "2.8 Upload Image", href: "/sessions/session-2-basic-operations#2-8" },
       { title: "2.9 Download File / Image", href: "/sessions/session-2-basic-operations#2-9" },
+      { title: "2.10 Scroll Into View", href: "/sessions/session-2-basic-operations#2-10" },
+      { title: "2.11 Colossal Carousel", href: "/sessions/session-2-basic-operations#2-11" },
     ],
   },
-  { href: "#", title: "Session 3 — API", meta: "request, auth, assertions", comingSoon: true },
-  { href: "#", title: "Session 4 — POM", meta: "page objects, fixtures", comingSoon: true },
+  {
+    href: "/sessions/session-3-api-basics",
+    title: "Session 3 — API Basics",
+    meta: "request, response, auth",
+    comingSoon: true,
+  },
+  {
+    href: "/sessions/session-4-pom",
+    title: "Session 4 — Page Object Model",
+    meta: "pages, fixtures, reuse",
+    comingSoon: true,
+  },
+  {
+    href: "/sessions/session-5-custom-ui",
+    title: "Session 5 — Custom UI Elements",
+    meta: "toggles, dropdowns, tricky DOM",
+    comingSoon: true,
+  },
 ];
 
-function isActiveSession(activeHref: string, sessionHref: string) {
-  const clean = (activeHref || "").split("#")[0];
-  if (sessionHref === "#") return false;
-  return clean === sessionHref || clean.startsWith(sessionHref + "/");
+const SESSION2_PATH = "/sessions/session-2-basic-operations";
+
+function getHash() {
+  if (typeof window === "undefined") return "";
+  return window.location.hash || "";
 }
 
-function getHash(href: string): string {
-  const i = href.indexOf("#");
-  return i >= 0 ? href.slice(i) : "";
-}
+export default function Sidebar() {
+  const pathname = usePathname();
+  const [hash, setHash] = useState<string>("");
 
-export function Sidebar({ activeHref }: { activeHref: string }) {
-  const session2IsActive = isActiveSession(activeHref, "/sessions/session-2-basic-operations");
-
-  // Accordion expansion state (default expand when user is on Session 2)
-  const [openSessionHref, setOpenSessionHref] = useState<string | null>(null);
-
-  // Track hash so we can highlight active child (2.1–2.9)
-  const [activeHash, setActiveHash] = useState<string>("");
-
+  // Keep hash in sync so active child highlight updates on click / back / forward
   useEffect(() => {
-    const update = () => setActiveHash(window.location.hash || "");
-    update();
-    window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
+    setHash(getHash());
+    const onHashChange = () => setHash(getHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
+  // Auto-expand the active session section
+  const [open, setOpen] = useState<Record<string, boolean>>({});
   useEffect(() => {
-    // Auto-expand Session 2 when visiting Session 2
-    if (session2IsActive) setOpenSessionHref("/sessions/session-2-basic-operations");
-  }, [session2IsActive]);
+    setOpen((prev) => {
+      const next = { ...prev };
+      for (const s of sessions) {
+        const isActiveSession = pathname === s.href;
+        if (isActiveSession) next[s.href] = true;
+      }
+      return next;
+    });
+  }, [pathname]);
+
+  const activeSession = useMemo(() => sessions.find((s) => pathname === s.href), [pathname]);
 
   return (
-    <aside className="panel panelSticky noScrollBar" style={{  overflowY: "auto" }}>
-      <div className="panelHeader">
-        <h2 className="h1">Sessions</h2>
-        <p className="small">Left menu for quick navigation</p>
+    <aside className="card panelSticky noScrollBar" style={{ padding: 12, position: "sticky", top: 12 }}>
+      <div style={{ fontWeight: 900, fontSize: 14 }}>🎭 Playwright Playground</div>
+      <div className="small" style={{ opacity: 0.8, marginTop: 6 }}>
+        Learn by interacting
       </div>
 
-      <div className="panelBody stack">
-        <div className="stack">
-          {sessions.map((s) => {
-            const active = isActiveSession(activeHref, s.href);
-            const isRealLink = s.href !== "#";
-            const hasChildren = !!s.children?.length;
+      <div style={{ height: 12 }} />
 
-            const expanded = openSessionHref === s.href;
+      <nav className="stack" style={{ gap: 10 }}>
+        {sessions.map((s) => {
+          const isActive = pathname === s.href;
+          const isOpen = Boolean(open[s.href]);
+          const hasChildren = Boolean(s.children?.length);
 
-            return (
-              <div key={s.title} className="stack" style={{ gap: 10 }}>
-                {/* Main card */}
-                <div
-                  className="card"
+          return (
+            <div key={s.href} className="card" style={{ padding: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                <Link
+                  href={s.href}
+                  aria-disabled={s.comingSoon ? true : undefined}
+                  onClick={(e) => {
+                    if (s.comingSoon) e.preventDefault();
+                    if (hasChildren) {
+                      setOpen((prev) => ({ ...prev, [s.href]: true }));
+                    }
+                  }}
                   style={{
-                    borderColor: active ? "rgba(110,231,255,0.35)" : undefined,
-                    boxShadow: active ? "0 0 0 3px rgba(110,231,255,0.08)" : undefined,
-                    opacity: isRealLink ? 1 : 0.6,
-                    cursor: isRealLink ? "pointer" : "not-allowed",
+                    display: "block",
+                    textDecoration: "none",
+                    fontWeight: 900,
+                    color: s.comingSoon ? "rgba(15,23,42,0.35)" : isActive ? "#9a3412" : "#0f172a",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    {/* Title area link */}
-                    <Link
-                      href={s.href}
-                      onClick={(e) => {
-                        if (!isRealLink) e.preventDefault();
-                      }}
-                      style={{ flex: 1, textDecoration: "none", color: "inherit" }}
-                    >
-                      <div
-                        style={{
-                          fontWeight: 600,
-                          marginBottom: 4,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                        }}
-                      >
-                        <span>{s.title}</span>
-                        {s.comingSoon && (
-                          <span
-                            className="small"
-                            style={{
-                              padding: "2px 8px",
-                              borderRadius: 999,
-                              background: "rgba(148,163,184,0.15)",
-                              border: "1px solid rgba(148,163,184,0.25)",
-                            }}
-                          >
-                            Soon
-                          </span>
-                        )}
-                      </div>
-                      <div className="small">{s.meta}</div>
-                    </Link>
+                  {s.title}
+                </Link>
 
-                    {/* Expand/collapse button (only if has children) */}
-                    {hasChildren && (
-                      <button
-                        type="button"
-                        aria-label={expanded ? "Collapse" : "Expand"}
-                        onClick={() => setOpenSessionHref(expanded ? null : s.href)}
-                        className="small"
-                        style={{
-                          borderRadius: 10,
-                          padding: "8px 10px",
-                          border: "1px solid rgba(148,163,184,0.25)",
-                          background: "rgba(2,6,23,0.02)",
-                          cursor: "pointer",
-                          userSelect: "none",
-                        }}
-                      >
-                        {expanded ? "−" : "+"}
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Expanded children */}
-                  {hasChildren && expanded && (
-                    <div style={{ marginTop: 12 }}>
-                      <div className="hr" style={{ margin: "10px 0" }} />
-
-                      <div className="stack" style={{ gap: 8 }}>
-                        {s.children!.map((c) => {
-                          const childHash = getHash(c.href);
-                          const childActive = !!childHash && childHash === activeHash;
-
-                          return (
-                            <a
-                              key={c.href}
-                              href={c.href}
-                              className="card"
-                              style={{
-                                padding: "10px 12px",
-                                display: "block",
-                                textDecoration: "none",
-                                color: "inherit",
-                                background: childActive ? "rgba(249,115,22,0.10)" : "rgba(2,6,23,0.02)",
-                                borderColor: childActive ? "rgba(249,115,22,0.35)" : "rgba(148,163,184,0.22)",
-                                boxShadow: childActive ? "0 0 0 3px rgba(249,115,22,0.08)" : undefined,
-                              }}
-                            >
-                              <div style={{ fontWeight: 600 }}>{c.title}</div>
-                            </a>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {hasChildren ? (
+                  <button
+                    className="btn"
+                    style={{
+                      padding: "6px 10px",
+                      borderRadius: 999,
+                      fontWeight: 800,
+                      opacity: isActive ? 1 : 0.8,
+                    }}
+                    onClick={() => setOpen((prev) => ({ ...prev, [s.href]: !prev[s.href] }))}
+                    aria-label={isOpen ? "Collapse" : "Expand"}
+                    title={isOpen ? "Collapse" : "Expand"}
+                    disabled={s.comingSoon}
+                    type="button"
+                  >
+                    {isOpen ? "–" : "+"}
+                  </button>
+                ) : null}
               </div>
-            );
-          })}
-        </div>
 
-        <div className="hr" />
-      </div>
+              <div className="small" style={{ opacity: 0.75, marginTop: 6 }}>
+                {s.meta}{" "}
+                {s.comingSoon ? (
+                  <span style={{ marginLeft: 6, fontWeight: 800, color: "rgba(15,23,42,0.45)" }}>• Coming soon</span>
+                ) : null}
+              </div>
+
+              {/* Children */}
+              {hasChildren && isOpen && !s.comingSoon ? (
+                <div className="stack" style={{ gap: 6, marginTop: 10 }}>
+                  {s.children!.map((c) => {
+                    const childHash = new URL(c.href, "http://x").hash; // "#2-1"
+                    const isChildActive = isActive && hash === childHash;
+
+                    // ✅ IMPORTANT:
+                    // If user is already on session 2 page, use a normal <a href="#...">
+                    // so the browser fires hashchange and your practice page updates.
+                    const isSession2 = pathname === SESSION2_PATH;
+                    if (isSession2) {
+                      return (
+                        <a
+                          key={c.href}
+                          href={childHash}
+                          style={{
+                            textDecoration: "none",
+                            padding: "8px 10px",
+                            borderRadius: 12,
+                            fontWeight: 800,
+                            fontSize: 13,
+                            background: isChildActive ? "rgba(249,115,22,0.10)" : "transparent",
+                            color: isChildActive ? "#9a3412" : "rgba(15,23,42,0.82)",
+                            border: isChildActive ? "1px solid rgba(249,115,22,0.25)" : "1px solid transparent",
+                            display: "block",
+                          }}
+                        >
+                          {c.title}
+                        </a>
+                      );
+                    }
+
+                    // Otherwise, normal navigation to session 2 (or other routes)
+                    return (
+                      <Link
+                        key={c.href}
+                        href={c.href}
+                        style={{
+                          textDecoration: "none",
+                          padding: "8px 10px",
+                          borderRadius: 12,
+                          fontWeight: 800,
+                          fontSize: 13,
+                          background: isChildActive ? "rgba(249,115,22,0.10)" : "transparent",
+                          color: isChildActive ? "#9a3412" : "rgba(15,23,42,0.82)",
+                          border: isChildActive ? "1px solid rgba(249,115,22,0.25)" : "1px solid transparent",
+                          display: "block",
+                        }}
+                      >
+                        {c.title}
+                      </Link>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Optional quick context */}
+      {activeSession?.children?.length ? (
+        <div className="card" style={{ padding: 10, marginTop: 12 }}>
+          <div className="small" style={{ fontWeight: 900 }}>
+            Tip
+          </div>
+          <div className="small" style={{ opacity: 0.8, marginTop: 6 }}>
+            Use the subtopics to switch practices (hash-based) without leaving the page.
+          </div>
+        </div>
+      ) : null}
     </aside>
   );
 }
