@@ -1,4 +1,4 @@
-import { Session2BasicOperationsPage } from "./Session2-client";
+import { Session2BasicOperationsPage } from "./session2-client";
 
 
 export default function Page() {
