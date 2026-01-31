@@ -60,13 +60,30 @@ export function Practice23() {
             <div className="small">Hidden text (DOM only)</div>
             <ul style={{ paddingLeft: 20, marginTop: 6 }}>
               <li>
-                <span data-testid="hidden-text" style={{ display: "none" }}> secret-token-123</span>
+                <span
+                  data-testid="display-none-text"
+                  style={{ display: "none" }}
+                >
+                  display: none → element is removed from layout and not visible to the user
+                </span>
               </li>
+
               <li>
-                <span data-testid="muted-text" className="muted">Not visible to user</span>
+                <span
+                  data-testid="muted-opacity-text"
+                  className="muted"
+                >
+                  opacity: 0 → element still exists in layout but fully transparent
+                </span>
               </li>
+
               <li>
-                <span data-testid="visibility-hidden-text" style={ { visibility: "hidden"}}> Hidden content </span>
+                <span
+                  data-testid="visibility-hidden-text"
+                  style={{ visibility: "hidden" }}
+                >
+                  visibility: hidden → element keeps its space but text is invisible
+                </span>
               </li>
             </ul>
           </div>
