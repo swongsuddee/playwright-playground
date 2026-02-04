@@ -6,20 +6,54 @@ export function Practice25() {
   const [meal, setMeal] = useState(false);
   const [payment, setPayment] = useState<"card" | "cash">("card");
 
+  // ===== Single custom dropdown =====
   const [countryOpen, setCountryOpen] = useState(false);
   const [country, setCountry] = useState("Thailand");
   const options = useMemo(() => ["Thailand", "Japan", "Nepal", "Russia"], []);
+
+  // ===== Native multiple select =====
+  const [languages, setLanguages] = useState<string[]>([]);
+
+  // ===== Custom multiple dropdown (max 3) =====
+  const MAX_TAGS = 3;
+  const [tagsOpen, setTagsOpen] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const tagOptions = ["QA", "Automation", "Playwright", "API", "Performance"];
+
+  const toggleTag = (tag: string) => {
+    setTags((prev) => {
+      if (prev.includes(tag)) {
+        return prev.filter((t) => t !== tag);
+      }
+      if (prev.length >= MAX_TAGS) {
+        return prev;
+      }
+      return [...prev, tag];
+    });
+  };
 
   return (
     <div className="stack" style={{ gap: 12 }}>
       <PracticeTitle
         title="Practice: Select, Checkbox, Radio & Dropdown"
-        goal="Goal: change selections and assert value/checked/aria-selected."
+        goal="Goal: change selections and assert value / checked / aria-selected / multiselect limit."
       />
 
-      <div className="card" style={{ padding: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div
+        className="card"
+        style={{
+          padding: 12,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 12,
+        }}
+      >
+        {/* ================= Left ================= */}
         <div className="stack" style={{ gap: 10 }}>
-          <label className="small" htmlFor="seatType">Seat type</label>
+          {/* Single select */}
+          <label className="small" htmlFor="seatType">
+            Seat type
+          </label>
           <select
             id="seatType"
             data-testid="select-seat-type"
@@ -32,7 +66,11 @@ export function Practice25() {
             <option value="sofa">Sofa</option>
           </select>
 
-          <label className="small" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          {/* Checkbox */}
+          <label
+            className="small"
+            style={{ display: "flex", gap: 10, alignItems: "center" }}
+          >
             <input
               data-testid="checkbox-meal"
               type="checkbox"
@@ -42,8 +80,14 @@ export function Practice25() {
             Add meal
           </label>
 
-          <div className="small" style={{ fontWeight: 900 }}>Payment</div>
-          <label className="small" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          {/* Radio */}
+          <div className="small" style={{ fontWeight: 900 }}>
+            Payment
+          </div>
+          <label
+            className="small"
+            style={{ display: "flex", gap: 10, alignItems: "center" }}
+          >
             <input
               data-testid="radio-card"
               type="radio"
@@ -53,7 +97,10 @@ export function Practice25() {
             />
             Card
           </label>
-          <label className="small" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <label
+            className="small"
+            style={{ display: "flex", gap: 10, alignItems: "center" }}
+          >
             <input
               data-testid="radio-cash"
               type="radio"
@@ -64,7 +111,32 @@ export function Practice25() {
             Cash
           </label>
 
-          <div className="small" style={{ fontWeight: 900, marginTop: 6 }}>Country (custom dropdown)</div>
+          {/* Native multiple select */}
+          <div className="small" style={{ fontWeight: 900, marginTop: 6 }}>
+            Languages (native multiple)
+          </div>
+          <select
+            multiple
+            data-testid="select-languages"
+            className="input"
+            value={languages}
+            onChange={(e) =>
+              setLanguages(
+                Array.from(e.target.selectedOptions).map((o) => o.value)
+              )
+            }
+            style={{ height: 120 }}
+          >
+            <option value="js">JavaScript</option>
+            <option value="ts">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="go">Go</option>
+          </select>
+
+          {/* Custom single dropdown */}
+          <div className="small" style={{ fontWeight: 900, marginTop: 6 }}>
+            Country (custom dropdown)
+          </div>
           <div className="card" style={{ padding: 12 }}>
             <div
               data-testid="dropdown-country"
@@ -72,82 +144,148 @@ export function Practice25() {
               aria-haspopup="listbox"
               aria-expanded={countryOpen}
               onClick={() => setCountryOpen((v) => !v)}
-              style={{ fontWeight: 900, cursor: "pointer", userSelect: "none" }}
+              style={{ fontWeight: 900, cursor: "pointer" }}
             >
               {country} ▾
             </div>
 
-            {countryOpen ? (
+            {countryOpen && (
               <div
-                data-testid="dropdown-list"
                 role="listbox"
-                style={{
-                  marginTop: 10,
-                  borderRadius: 12,
-                  border: "1px solid rgba(148,163,184,0.25)",
-                  background: "white",
-                  overflow: "hidden",
-                }}
+                data-testid="dropdown-country-list"
+                style={{ marginTop: 10 }}
               >
-                {options.map((o) => {
-                  const selected = o === country;
+                {options.map((o) => (
+                  <div
+                    key={o}
+                    role="option"
+                    aria-selected={o === country}
+                    data-testid={`country-${o}`}
+                    onClick={() => {
+                      setCountry(o);
+                      setCountryOpen(false);
+                    }}
+                    style={{ padding: 8, cursor: "pointer" }}
+                  >
+                    {o}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Custom multiple dropdown (max 3) */}
+          <div className="small" style={{ fontWeight: 900 }}>
+            Tags (custom multiple, max 3)
+          </div>
+          <div className="card" style={{ padding: 12 }}>
+            <div
+              data-testid="dropdown-tags"
+              role="button"
+              aria-haspopup="listbox"
+              aria-expanded={tagsOpen}
+              onClick={() => setTagsOpen((v) => !v)}
+              style={{ fontWeight: 900, cursor: "pointer" }}
+            >
+              {tags.length ? tags.join(", ") : "Select tags"} ▾
+            </div>
+
+            <div className="small" style={{ opacity: 0.6 }}>
+              Select up to {MAX_TAGS} options
+            </div>
+
+            {tagsOpen && (
+              <div
+                role="listbox"
+                aria-multiselectable="true"
+                data-testid="dropdown-tags-list"
+                style={{ marginTop: 10 }}
+              >
+                {tagOptions.map((tag) => {
+                  const selected = tags.includes(tag);
+                  const disabled = !selected && tags.length >= MAX_TAGS;
+
                   return (
                     <div
-                      key={o}
+                      key={tag}
                       role="option"
                       aria-selected={selected}
-                      data-testid={`country-${o}`}
-                      onClick={() => {
-                        setCountry(o);
-                        setCountryOpen(false);
-                      }}
+                      aria-disabled={disabled}
+                      data-testid={`tag-${tag}`}
+                      onClick={() => !disabled && toggleTag(tag)}
                       style={{
-                        padding: 10,
-                        fontWeight: 900,
-                        cursor: "pointer",
-                        background: selected ? "rgba(249,115,22,0.10)" : "transparent",
-                        color: selected ? "#9a3412" : "#0f172a",
+                        padding: 8,
+                        cursor: disabled ? "not-allowed" : "pointer",
+                        opacity: disabled ? 0.4 : 1,
+                        fontWeight: selected ? 900 : 400,
                       }}
                     >
-                      {o}
+                      <input type="checkbox" readOnly checked={selected} />{" "}
+                      {tag}
                     </div>
                   );
                 })}
               </div>
-            ) : null}
+            )}
           </div>
         </div>
 
+        {/* ================= Right ================= */}
         <div className="stack" style={{ gap: 10 }}>
           <div className="card" style={{ padding: 12 }}>
             <div className="small">Observed state</div>
-            <div className="small" style={{ marginTop: 8 }}>
-              seatType: <span data-testid="value-seatType" style={{ fontWeight: 900 }}>{seatType}</span>
+
+            <div className="small">
+              seatType:{" "}
+              <span data-testid="value-seatType">{seatType}</span>
             </div>
-            <div className="small" style={{ marginTop: 8 }}>
-              meal: <span data-testid="value-meal" style={{ fontWeight: 900 }}>{meal ? "true" : "false"}</span>
+
+            <div className="small">
+              meal:{" "}
+              <span data-testid="value-meal">{String(meal)}</span>
             </div>
-            <div className="small" style={{ marginTop: 8 }}>
-              payment: <span data-testid="value-payment" style={{ fontWeight: 900 }}>{payment}</span>
+
+            <div className="small">
+              payment:{" "}
+              <span data-testid="value-payment">{payment}</span>
             </div>
-            <div className="small" style={{ marginTop: 8 }}>
-              country: <span data-testid="value-country" style={{ fontWeight: 900 }}>{country}</span>
+
+            <div className="small">
+              country:{" "}
+              <span data-testid="value-country">{country}</span>
+            </div>
+
+            <div className="small">
+              languages:{" "}
+              <span data-testid="value-languages">
+                {languages.join(", ")}
+              </span>
+            </div>
+
+            <div className="small">
+              tags:{" "}
+              <span data-testid="value-tags">{tags.join(", ")}</span>
             </div>
           </div>
         </div>
       </div>
 
-          <CodeBox
-            code={`await page.getByTestId('select-seat-type').selectOption('vip');
-await expect(page.getByTestId('select-seat-type')).toHaveValue('vip');
+      <CodeBox
+        code={`// Native multiple select
+await page.getByTestId('select-languages').selectOption(['ts', 'python']);
+await expect(page.getByTestId('value-languages')).toHaveText('ts, python');
 
-await page.getByTestId('checkbox-meal').check();
-await expect(page.getByTestId('checkbox-meal')).toBeChecked();
+// Custom multiple dropdown (max 3)
+await page.getByTestId('dropdown-tags').click();
+await page.getByTestId('tag-QA').click();
+await page.getByTestId('tag-Playwright').click();
+await page.getByTestId('tag-API').click();
 
-await page.getByTestId('dropdown-country').click();
-await page.getByTestId('country-Japan').click();
-await expect(page.getByTestId('value-country')).toHaveText('Japan');`}
-          />
+// Exceeding max should have no effect
+await page.getByTestId('tag-Performance').click();
+await expect(page.getByTestId('value-tags'))
+  .toHaveText('QA, Playwright, API');`}
+      />
     </div>
   );
 }
