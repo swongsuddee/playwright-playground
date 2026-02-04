@@ -20,7 +20,7 @@ export function LocatorPlayground({ onHoverHint }: Props) {
   const taken = useMemo(() => new Set<string>(["5C", "5D"]), []);
 
   // Optional: pre-select seats like the sketch (remove if you want empty by default)
-  const [selected, setSelected] = useState<string[]>(["2A", "2B", "3C", "3D"]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const [movie, setMovie] = useState("Interstellar");
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
