@@ -1,5 +1,6 @@
 "use client";
 
+import { LocatorChallenge } from "@/app/sessions/session-1-locators/LocatorChallenge";
 import { LocatorPlayground } from "@/app/sessions/session-1-locators/LocatorPlayground";
 import { InspectorPanel } from "@/components/layout/InspectorPanel";
 import Sidebar from "@/components/layout/Sidebar";
@@ -13,7 +14,11 @@ export function Session1LocatorFindingPage() {
     <main className="container">
       {/* <HeroHeader /> */}
       <Sidebar />
-      <LocatorPlayground onHoverHint={setHint} />
+      {/* Center column: playground + interactive challenge share one sticky scroll area */}
+      <div className="panelSticky" style={{ display: "grid", gap: 16, alignContent: "start" }}>
+        <LocatorPlayground onHoverHint={setHint} />
+        <LocatorChallenge onHoverHint={setHint} />
+      </div>
       <InspectorPanel hint={hint} />
     </main>
   );

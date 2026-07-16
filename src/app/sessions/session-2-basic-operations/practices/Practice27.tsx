@@ -11,7 +11,7 @@ export function Practice27() {
         goal="Goal: click toggle → assert aria-checked + label."
       />
 
-      <div className="card" style={{ padding: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div className="card grid2" style={{ padding: 12 }}>
         <div className="stack" style={{ gap: 10 }}>
           <div
             data-testid="toggle"
@@ -22,8 +22,8 @@ export function Practice27() {
               width: 64,
               height: 34,
               borderRadius: 999,
-              border: "1px solid rgba(148,163,184,0.25)",
-              background: on ? "rgba(249,115,22,0.25)" : "rgba(2,6,23,0.06)",
+              border: "1px solid var(--border-strong)",
+              background: on ? "var(--accent)" : "var(--surface-2)",
               position: "relative",
               cursor: "pointer",
             }}
@@ -34,8 +34,8 @@ export function Practice27() {
                 width: 28,
                 height: 28,
                 borderRadius: 999,
-                background: "white",
-                border: "1px solid rgba(148,163,184,0.25)",
+                background: "var(--surface)",
+                border: "1px solid var(--border-strong)",
                 position: "absolute",
                 top: 2,
                 left: on ? 34 : 2,

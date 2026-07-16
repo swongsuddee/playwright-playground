@@ -132,15 +132,7 @@ export function PracticeScrollIntoView() {
           <div className="small" style={{ opacity: 0.75 }}>Tip: scroll down to load more</div>
         </div>
 
-        <div
-          data-testid="items-grid"
-          style={{
-            marginTop: 12,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 10,
-          }}
-        >
+        <div data-testid="items-grid" className="grid2" style={{ marginTop: 12 }}>
           {items.map((it) => (
             <div
               key={it.id}
@@ -149,7 +141,7 @@ export function PracticeScrollIntoView() {
               style={{
                 padding: 12,
                 display: "grid",
-                gridTemplateColumns: "56px 1fr",
+                gridTemplateColumns: "56px minmax(0, 1fr)",
                 gap: 12,
                 alignItems: "center",
               }}
@@ -163,7 +155,8 @@ export function PracticeScrollIntoView() {
                   display: "grid",
                   placeItems: "center",
                   fontWeight: 900,
-                  background: "rgba(255,140,0,0.12)",
+                  color: "var(--accent-text)",
+                  background: "var(--accent-soft)",
                 }}
               >
                 {it.id}
@@ -218,8 +211,8 @@ function Spinner() {
         width: 16,
         height: 16,
         borderRadius: 999,
-        border: "2px solid rgba(0,0,0,0.2)",
-        borderTopColor: "rgba(0,0,0,0.7)",
+        border: "2px solid var(--border-strong)",
+        borderTopColor: "var(--accent)",
         display: "inline-block",
         animation: "spin 0.8s linear infinite",
       }}

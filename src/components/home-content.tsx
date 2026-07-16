@@ -1,72 +1,51 @@
+import Link from "next/link";
+
 export default function HomeContent() {
-    return (
-      
-<section className="panel panelSticky">
-    {/* <div className="space-y-6"> */}
-      {/* Header block (same tone as session header) */}
+  return (
+    <section className="panel panelSticky">
       <div className="panelHeader">
-        <h1 className="h1">
-          🎭 Playwright Playground
-        </h1>
-        <p className="small">
-          Learn Playwright by interacting with real UI patterns.
-        </p>
+        <h1 className="h1">🎭 Playwright Playground</h1>
+        <p className="small">Learn Playwright by interacting with real UI patterns.</p>
       </div>
 
-      {/* Main card – mirrors “Seat Booking Practice” container */}
-      <div className="panelBody stack">
-          {/* Intro */}
-          <div>
-            <h2 className="h2">What is this?</h2>
-            <p className="mt-2 text-sm text-slate-600 max-w-2xl">
-              This is a static playground for Playwright beginners.  
-              Each session provides a small UI (like a real app) so you can
-              practice writing locators, actions, and assertions in a realistic way.
-            </p>
+      <div className="panelBody stack" style={{ gap: 16 }}>
+        <div>
+          <h2 className="h2">What is this?</h2>
+          <p className="small" style={{ maxWidth: "62ch" }}>
+            A hands-on playground for QA engineers. Each session gives you a small, realistic UI so you can practice
+            writing locators, actions, and assertions — and Track A covers the programming foundations underneath.
+          </p>
+        </div>
+
+        <div className="grid2">
+          <div className="card">
+            <h3 className="h2">What you&rsquo;ll practice</h3>
+            <ul className="inspectorList" style={{ marginTop: 10 }}>
+              <li><b>Foundations:</b> sequence, loops &amp; conditionals as blocks</li>
+              <li><b>Locators:</b> role, label, test id, text, CSS, XPath</li>
+              <li><b>Actions:</b> click, hover, fill, type, press, select</li>
+              <li><b>Assertions:</b> web-first, auto-retrying expectations</li>
+            </ul>
           </div>
 
-          {/* Two-column blocks (same visual weight as practice panels) */}
-            <div className="rounded-2xl border bg-slate-50 p-5">
-              <h3 className="text-sm font-semibold text-slate-900">
-                What you’ll practice
-              </h3>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                <li>
-                  <span className="font-semibold">Locators:</span>{" "}
-                  role, label, test id, text, CSS, filtering
-                </li>
-                <li>
-                  <span className="font-semibold">Actions:</span>{" "}
-                  click, hover, fill, type, press, select
-                </li>
-                <li>
-                  <span className="font-semibold">Assertions:</span>{" "}
-                  visibility, text, value, count, enabled/disabled
-                </li>
-                <li>
-                  <span className="font-semibold">Patterns:</span>{" "}
-                  stable selectors, reusable helpers, POM basics
-                </li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border bg-slate-50 p-5">
-              <h3 className="text-sm font-semibold text-slate-900">
-                How to use this playground
-              </h3>
-              <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-slate-700">
-                <li>Select a session from the left sidebar</li>
-                <li>Interact with the UI in the center panel</li>
-                <li>Hover elements to inspect locator hints</li>
-                <li>Translate what you see into Playwright code</li>
-              </ol>
-            </div>
-
-          
+          <div className="card">
+            <h3 className="h2">How to use it</h3>
+            <ol className="inspectorList" style={{ marginTop: 10 }}>
+              <li>Pick a session from the left sidebar</li>
+              <li>Interact with the UI in the center panel</li>
+              <li>Hover elements to inspect locator hints</li>
+              <li>Translate what you see into Playwright code</li>
+            </ol>
+          </div>
         </div>
-                
-    {/* </div> */}
-        
-</section>
+
+        <div className="card" style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
+          <span className="small" style={{ margin: 0 }}>Start here:</span>
+          <Link className="btn btnPrimary" href="/foundations/a3-decomposition">A1 — Problem Decomposition</Link>
+          <Link className="btn" href="/sessions/session-1-locators">Session 1 — Locators</Link>
+          <Link className="btn" href="/sessions/session-2-basic-operations">Session 2 — Basic Ops</Link>
+        </div>
+      </div>
+    </section>
   );
 }
