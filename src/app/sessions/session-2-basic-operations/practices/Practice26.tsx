@@ -107,8 +107,9 @@ export function Practice26() {
                   marginTop: 8,
                   padding: 10,
                   borderRadius: 8,
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
+                  background: "var(--danger-soft)",
+                  border: "1px solid var(--danger-border)",
+                  color: "var(--danger)",
                   fontWeight: 600,
                 }}
               >
@@ -146,10 +147,11 @@ export function Practice26() {
                     style={{
                       height: 36,
                       borderRadius: 8,
+                      border: "1px solid var(--border)",
                       opacity: c.disabled ? 0.4 : 1,
                       cursor: c.disabled ? "not-allowed" : "pointer",
-                      background: selectedDate === c.iso ? "#111827" : "#fff",
-                      color: selectedDate === c.iso ? "#fff" : "#111",
+                      background: selectedDate === c.iso ? "var(--accent)" : "var(--surface)",
+                      color: selectedDate === c.iso ? "var(--accent-contrast)" : "var(--text)",
                     }}
                   >
                     {c.day}

@@ -158,7 +158,7 @@ function PracticeColossalAutoSnap() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "48px 1fr 48px",
+          gridTemplateColumns: "48px minmax(0, 1fr) 48px",
           alignItems: "center",
           gap: 10,
         }}
@@ -265,10 +265,10 @@ function BannerCard({
         width: "var(--bannerW)",
         height: 120,
         borderRadius: 18,
-        border: "2px solid var(--accent, #ff7a18)",
+        border: "2px solid var(--accent)",
         display: "grid",
         placeItems: "center",
-        background: "white",
+        background: "var(--surface)",
         opacity: isCenter ? 1 : 0.92,
         transform: isCenter ? "scale(1)" : "scale(0.96)",
         transition: "transform 200ms ease, opacity 200ms ease",
@@ -326,7 +326,7 @@ function PracticeColossalSingleFade() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "48px 1fr 48px",
+          gridTemplateColumns: "48px minmax(0, 1fr) 48px",
           alignItems: "center",
           gap: 10,
         }}
@@ -341,17 +341,17 @@ function PracticeColossalSingleFade() {
           &lt;
         </button>
 
-        <div data-testid="colossal-single-stage" style={{ height: 140, display: "grid", placeItems: "center" }}>
+        <div data-testid="colossal-single-stage" style={{ height: 140, display: "grid", placeItems: "center", minWidth: 0, overflow: "hidden" }}>
           <div
             data-testid="colossal-single-banner"
             style={{
               width: "min(520px, 72vw)",
               height: 120,
               borderRadius: 18,
-              border: "2px solid var(--accent, #ff7a18)",
+              border: "2px solid var(--accent)",
               display: "grid",
               placeItems: "center",
-              background: "white",
+              background: "var(--surface)",
               opacity: phase === "in" ? 1 : 0,
               transform: phase === "in" ? "translateY(0px)" : "translateY(6px)",
               transition: "opacity 220ms ease, transform 220ms ease",

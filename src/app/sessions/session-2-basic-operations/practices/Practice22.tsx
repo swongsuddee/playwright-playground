@@ -89,7 +89,7 @@ export function Practice22({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
           Input rules
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="grid2">
           <div>
             <div className="small" style={{ fontWeight: 800 }}>
               Username rules
@@ -118,10 +118,7 @@ export function Practice22({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
         </div>
       </div>
 
-      <div
-        className="card"
-        style={{ padding: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
-      >
+      <div className="card grid2" style={{ padding: 12 }}>
         <div className="stack" style={{ gap: 10 }}>
           <label className="small" htmlFor="username">
             Username
@@ -172,11 +169,11 @@ export function Practice22({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
               className="card"
               style={{
                 padding: 10,
-                borderColor: "rgba(245,158,11,0.35)",
-                background: "rgba(245,158,11,0.08)",
+                borderColor: "var(--warn)",
+                background: "var(--surface-2)",
               }}
             >
-              <div style={{ fontWeight: 800 }}>{usernameDigitError}</div>
+              <div style={{ fontWeight: 800, color: "var(--warn)" }}>{usernameDigitError}</div>
               <div className="muted" style={{ marginTop: 4 }}>
                 Username accepts letters only (A–Z).
               </div>
@@ -210,14 +207,14 @@ export function Practice22({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
               className="card"
               style={{
                 padding: 12,
-                borderColor: "rgba(239,68,68,0.35)",
-                background: "rgba(239,68,68,0.06)",
+                borderColor: "var(--danger-border)",
+                background: "var(--danger-soft)",
               }}
             >
-              <div style={{ fontWeight: 900, color: "#7f1d1d" }}>Please fix:</div>
+              <div style={{ fontWeight: 900, color: "var(--danger)" }}>Please fix:</div>
               <ul style={{ marginTop: 8, paddingLeft: 18 }}>
                 {ruleErrors.map((m) => (
-                  <li key={m} style={{ color: "#7f1d1d", fontWeight: 700 }}>
+                  <li key={m} style={{ color: "var(--danger)", fontWeight: 700 }}>
                     {m}
                   </li>
                 ))}
@@ -232,8 +229,8 @@ export function Practice22({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
               className="card"
               style={{
                 padding: 12,
-                borderColor: "rgba(34,197,94,0.35)",
-                background: "rgba(34,197,94,0.08)",
+                borderColor: "var(--success-border)",
+                background: "var(--success-soft)",
               }}
             >
               <div style={{ fontWeight: 900 }}>✅ Submitted successfully</div>

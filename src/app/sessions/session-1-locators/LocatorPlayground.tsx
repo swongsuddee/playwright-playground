@@ -62,7 +62,7 @@ export function LocatorPlayground({ onHoverHint }: Props) {
   });
 
   return (
-    <section className="panel panelSticky">
+    <section className="panel">
       <div className="panelHeader">
         <h1 className="h1">Session 1 — Locator Finding</h1>
         <p className="small">

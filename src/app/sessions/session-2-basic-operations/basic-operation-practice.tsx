@@ -3,37 +3,15 @@
 import type { LocatorHint } from "@/components/types";
 import { useEffect, useMemo, useState } from "react";
 import {
-  Practice21,
-  Practice22,
-  Practice23,
-  Practice24,
-  Practice25,
-  Practice26,
-  Practice27,
-  PracticeUploadFile,
-  PracticeDownloadFile,
-  PracticeScrollIntoView,
-  PracticeColossal,
-} from "./practices";
+  defaultSession2Key,
+  getSession2Practice,
+  session2Keys,
+} from "./practices/registry";
 
-type TopicKey =
-  | "2-1"
-  | "2-2"
-  | "2-3"
-  | "2-4"
-  | "2-5"
-  | "2-6"
-  | "2-7"
-  | "2-8"
-  | "2-9"
-  | "2-10"
-  | "2-11";
-
-function safeHash(): TopicKey {
-  if (typeof window === "undefined") return "2-1";
+function safeHash(): string {
+  if (typeof window === "undefined") return defaultSession2Key;
   const raw = window.location.hash?.replace("#", "");
-  const allowed: TopicKey[] = ["2-1", "2-2", "2-3", "2-4", "2-5", "2-6", "2-7", "2-8", "2-9", "2-10", "2-11"];
-  return allowed.includes(raw as TopicKey) ? (raw as TopicKey) : "2-1";
+  return session2Keys.includes(raw) ? raw : defaultSession2Key;
 }
 
 export function BasicOperationsPractice({
@@ -41,7 +19,7 @@ export function BasicOperationsPractice({
 }: {
   onHoverHint: (h: LocatorHint | null) => void;
 }) {
-  const [active, setActive] = useState<TopicKey>("2-1");
+  const [active, setActive] = useState<string>(defaultSession2Key);
 
   useEffect(() => {
     setActive(safeHash());
@@ -64,6 +42,8 @@ export function BasicOperationsPractice({
     []
   );
 
+  const activePractice = getSession2Practice(active);
+
   return (
     <section className="panel">
       <div className="panelHeader" onMouseEnter={() => onHoverHint(headerHint)} onMouseLeave={() => onHoverHint(null)}>
@@ -71,19 +51,7 @@ export function BasicOperationsPractice({
         <p className="small">Practice each interaction and always finish with an assertion.</p>
       </div>
 
-      <div className="panelBody stack">
-        {active === "2-1" && <Practice21 onHoverHint={onHoverHint} />}
-        {active === "2-2" && <Practice22 onHoverHint={onHoverHint} />}
-        {active === "2-3" && <Practice23 />}
-        {active === "2-4" && <Practice24 />}
-        {active === "2-5" && <Practice25 />}
-        {active === "2-6" && <Practice26 />}
-        {active === "2-7" && <Practice27 />}
-        {active === "2-8" && <PracticeUploadFile />}
-        {active === "2-9" && <PracticeDownloadFile />}
-        {active === "2-10" && <PracticeScrollIntoView />}
-        {active === "2-11" && <PracticeColossal />}
-      </div>
+      <div className="panelBody stack">{activePractice.render({ onHoverHint })}</div>
     </section>
   );
 }

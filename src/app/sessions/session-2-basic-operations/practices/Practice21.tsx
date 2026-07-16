@@ -16,7 +16,7 @@ export function Practice21({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
         goal="Goal: click / dblclick / hover → verify UI changes using assertions."
       />
 
-      <div className="card" style={{ padding: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div className="card grid2" style={{ padding: 12 }}>
         <div className="stack" style={{ gap: 10 }}>
           <button
             data-testid="btn-save"
@@ -89,10 +89,10 @@ export function Practice21({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
               onHoverHint(null);
             }}
             style={{
-              border: "1px solid rgba(148,163,184,0.25)",
+              border: "1px solid var(--border)",
               borderRadius: 12,
               padding: 12,
-              background: "rgba(2,6,23,0.02)",
+              background: "var(--surface-2)",
               fontWeight: 800,
             }}
           >
@@ -104,9 +104,9 @@ export function Practice21({ onHoverHint }: { onHoverHint: (h: LocatorHint | nul
                   marginTop: 8,
                   padding: 10,
                   borderRadius: 12,
-                  border: "1px solid rgba(249,115,22,0.35)",
-                  background: "rgba(249,115,22,0.08)",
-                  color: "#9a3412",
+                  border: "1px solid var(--accent-border)",
+                  background: "var(--accent-soft)",
+                  color: "var(--accent-text)",
                   fontWeight: 700,
                 }}
               >
