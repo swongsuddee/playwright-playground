@@ -1,6 +1,7 @@
 /* ============================================================
-   Playwright Playground — "Bussar" CI (from Figma)
-   DM Sans · warm orange primary + periwinkle indigo secondary
+   Playwright Playground — "Wander" CI
+   Outfit display · Inter body · warm cream + Wander blue,
+   burnt-orange action, deep-teal ink
    rounded · soft-elevated · light & dark (auto via OS)
    See docs/design-system.md for the token spec.
    ============================================================ */
@@ -8,117 +9,123 @@
 :root {
   color-scheme: light dark;
 
-  /* Surfaces */
-  --bg: #fafafa;
+  /* Surfaces — warm cream page, white cards */
+  --bg: #f3efe8;
   --surface: #ffffff;
-  --surface-2: #f5f4f5;
-  --surface-3: #ececec;
+  --surface-2: #f6f1e8;
+  --surface-3: #ece4d6;
 
-  /* Text */
-  --text: #17171b;
-  --text-muted: #5c5c66;
-  --text-faint: #9a9aa4;
+  /* Text — deep teal ink */
+  --text: #1f3d47;
+  --text-muted: #4f6570;
+  --text-faint: #8a9aa1;
 
-  /* Lines */
-  --border: #ededec;
-  --border-strong: #e2e0e0;
+  /* Lines — warm */
+  --border: #e7dfd0;
+  --border-strong: #d8cbb6;
 
-  /* Accent — warm orange */
-  --accent: #ffa54e;
-  --accent-hover: #f2921f;
-  --accent-soft: #fff3e6;
-  --accent-border: #ffd7ac;
-  --accent-text: #b15e12; /* readable orange label on a surface (AA) */
+  /* Accent — Wander burnt orange */
+  --accent: #d9772b;
+  --accent-hover: #f97316;
+  --accent-soft: #f8e7d6;
+  --accent-border: #eecaa4;
+  --accent-text: #a9551a; /* readable orange label on a surface (AA) */
   --accent-contrast: #ffffff; /* text on the solid accent */
-  --ring: rgba(255, 165, 78, 0.32);
+  --ring: rgba(217, 119, 43, 0.34);
 
-  /* Secondary — periwinkle indigo */
-  --secondary: #9a9eff;
-  --secondary-soft: #eeeeff;
-  --secondary-border: #d3d4ff;
-  --secondary-text: #5a5ee0;
+  /* Secondary — Wander blue */
+  --secondary: #7bb5cc;
+  --secondary-soft: #e6f1f5;
+  --secondary-border: #c2dde7;
+  --secondary-text: #2f6e88;
 
   /* Status */
   --success: #1a9d63;
-  --success-soft: #e9f9f0;
-  --success-border: #b6ecd0;
-  --danger: #e5484d;
-  --danger-soft: #fdedee;
-  --danger-border: #f7c9cb;
-  --warn: #e08a1e;
+  --success-soft: #e6f4ec;
+  --success-border: #bfe0cd;
+  --danger: #cf4b3f;
+  --danger-soft: #f9e8e4;
+  --danger-border: #eec7bf;
+  --warn: #c9820f;
 
   /* Code */
-  --code-bg: #f5f4f5;
-  --code-text: #1f1f24;
-  --code-border: #e6e4e4;
+  --code-bg: #f6f1e8;
+  --code-text: #1f3d47;
+  --code-border: #e7dfd0;
 
-  /* Playful category accents (Scratch / maze legends / dots) */
-  --c-coral: #ff7a7a;
-  --c-sky: #91d4ff;
-  --c-indigo: #9a9eff;
-  --c-amber: #fdc161;
+  /* Category accents — Wander-cohesive (skill tree / legends / dots) */
+  --c-coral: #cf6b4f; /* terracotta */
+  --c-sky: #8cc3d8; /* light blue */
+  --c-indigo: #4f8fa8; /* deep wander blue */
+  --c-amber: #d99a3c; /* amber */
 
   /* Elevation — soft, low-alpha */
-  --shadow-sm: 0 1px 2px rgba(17, 17, 26, 0.06);
-  --shadow: 0 8px 24px rgba(17, 17, 26, 0.07);
-  --shadow-lg: 0 20px 48px rgba(17, 17, 26, 0.12);
+  --shadow-sm: 0 1px 2px rgba(31, 61, 71, 0.06);
+  --shadow: 0 8px 24px rgba(31, 61, 71, 0.09);
+  --shadow-lg: 0 20px 48px rgba(31, 61, 71, 0.14);
 
   /* Shape */
   --radius: 16px;
   --radius-lg: 22px;
   --radius-sm: 12px;
 
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
     "Apple Color Emoji", "Segoe UI Emoji";
+  --font-display: "Outfit", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131318;
-    --surface: #1c1c22;
-    --surface-2: #24242c;
-    --surface-3: #2e2e37;
+    /* Surfaces — deep teal */
+    --bg: #13232a;
+    --surface: #1b323a;
+    --surface-2: #234049;
+    --surface-3: #2c4d57;
 
-    --text: #f4f4f6;
-    --text-muted: #a7a7b2;
-    --text-faint: #72727c;
+    /* Text — warm cream ink */
+    --text: #f1ece2;
+    --text-muted: #b3c1c6;
+    --text-faint: #7c8f97;
 
-    --border: #2b2b33;
-    --border-strong: #3a3a44;
+    --border: #294550;
+    --border-strong: #3a5a65;
 
-    --accent: #ffb266;
-    --accent-hover: #ffc487;
-    --accent-soft: rgba(255, 165, 78, 0.15);
-    --accent-border: rgba(255, 165, 78, 0.36);
-    --accent-text: #ffc48c;
-    --accent-contrast: #2a1a08;
-    --ring: rgba(255, 178, 102, 0.42);
+    /* Accent — Wander orange, lifted for dark */
+    --accent: #e8853a;
+    --accent-hover: #f97316;
+    --accent-soft: rgba(217, 119, 43, 0.16);
+    --accent-border: rgba(217, 119, 43, 0.4);
+    --accent-text: #f0a866;
+    --accent-contrast: #231405;
+    --ring: rgba(232, 133, 58, 0.44);
 
-    --secondary: #b1b4ff;
-    --secondary-soft: rgba(154, 158, 255, 0.16);
-    --secondary-border: rgba(154, 158, 255, 0.36);
-    --secondary-text: #c3c5ff;
+    /* Secondary — Wander blue, lifted */
+    --secondary: #8fc3d8;
+    --secondary-soft: rgba(123, 181, 204, 0.16);
+    --secondary-border: rgba(123, 181, 204, 0.38);
+    --secondary-text: #a9d6e7;
 
     --success: #35c88a;
     --success-soft: rgba(53, 200, 138, 0.14);
     --success-border: rgba(53, 200, 138, 0.32);
-    --danger: #ff6b6f;
+    --danger: #ff7a6f;
     --danger-soft: rgba(229, 72, 77, 0.16);
     --danger-border: rgba(229, 72, 77, 0.4);
     --warn: #f0a94a;
 
-    --code-bg: #1c1c22;
-    --code-text: #e6e6ea;
-    --code-border: #2b2b33;
+    --code-bg: #1b323a;
+    --code-text: #eef0ea;
+    --code-border: #294550;
 
-    --c-coral: #ff9a9a;
-    --c-sky: #aee0fb;
-    --c-indigo: #b1b4ff;
-    --c-amber: #ffd694;
+    --c-coral: #e08a70;
+    --c-sky: #a6d2e2;
+    --c-indigo: #78b3cc;
+    --c-amber: #e6bd6a;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
-    --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.6);
+    --shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.55);
   }
 }
 
@@ -182,6 +189,7 @@ a { color: inherit; text-decoration: none; }
 .panelBody { padding: 20px; }
 
 /* ===== Typography ===== */
+h1, h2, h3, h4, .h1, .h2, .lpTitle, .lpH2 { font-family: var(--font-display); }
 .h1 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
 .h2 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
 .small { margin: 6px 0 0 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
@@ -223,7 +231,7 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--border-strong); background: var(--surface); color: var(--text);
   padding: 10px 16px; border-radius: var(--radius);
   font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.04s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 .btn:hover { background: var(--surface-2); }
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); border-color: var(--accent); }
@@ -444,7 +452,7 @@ a { color: inherit; text-decoration: none; }
   background:
     radial-gradient(120% 90% at 50% 50%, var(--accent-soft) 0%, transparent 55%),
     radial-gradient(60% 60% at 12% 22%, var(--secondary-soft) 0%, transparent 60%),
-    radial-gradient(60% 60% at 88% 78%, rgba(255,122,122,0.12) 0%, transparent 60%),
+    radial-gradient(60% 60% at 88% 78%, rgba(207,107,79,0.14) 0%, transparent 60%),
     var(--surface);
   box-shadow: var(--shadow);
   overflow: hidden;
@@ -515,7 +523,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
   font-size: 16px;
   box-shadow: 0 0 0 6px var(--accent-soft), var(--shadow);
-  animation: treePulse 3.2s ease-in-out infinite;
+  animation: treePop 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) backwards, treePulse 3.2s ease-in-out infinite 0.55s;
 }
 .treeNode[data-kind="hub"] .treeNodeIcon { font-size: 20px; }
 
@@ -596,3 +604,65 @@ a { color: inherit; text-decoration: none; }
 /* ===== Responsive overflow safety ===== */
 .panelBody pre, .card pre { max-width: 100%; }
 img { max-width: 100%; height: auto; }
+
+/* ============================================================
+   Motion — tasteful entrance, scroll reveal & micro-interactions
+   All gated on (prefers-reduced-motion: no-preference).
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Landing hero fades up on load */
+  .lpTreeHead { animation: fadeUp 0.6s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
+
+  /* Interior pages: the three panels stagger up on load */
+  .container > * { animation: fadeUp 0.5s ease backwards; }
+  .container > *:nth-child(2) { animation-delay: 0.07s; }
+  .container > *:nth-child(3) { animation-delay: 0.14s; }
+
+  /* Skill-tree nodes pop in, rippling out from the hub */
+  .treeNode {
+    animation: treePop 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+    animation-delay: var(--node-delay, 0ms);
+  }
+  /* Solid connectors draw themselves in; locked (dashed) ones fade in */
+  .treeEdge[data-draw] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: treeDraw 0.8s ease forwards;
+    animation-delay: var(--edge-delay, 0ms);
+  }
+  .treeEdge[data-locked="true"] {
+    animation: treeEdgeFade 0.6s ease backwards;
+    animation-delay: var(--edge-delay, 0ms);
+  }
+
+  /* Reveal-on-scroll (driven by ScrollReveal) */
+  [data-reveal] {
+    transition: opacity 0.6s cubic-bezier(0.2, 0.6, 0.2, 1),
+      transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal].reveal-hidden { opacity: 0; transform: translateY(22px); }
+
+  /* Micro-interactions */
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0) scale(0.99); }
+  .btnPrimary:hover { box-shadow: var(--shadow); }
+  .lp .card { transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+  .lp .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--border-strong); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes treePop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.82); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes treeDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes treeEdgeFade {
+  from { opacity: 0; }
+  to { opacity: 0.6; }
+}

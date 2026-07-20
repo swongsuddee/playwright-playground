@@ -11,9 +11,31 @@ export type BuildStep = {
   pseudo?: string; // language-neutral pseudocode
 };
 
+// One sub-problem the whole game breaks into (the A1 "Problem Decomposition" skill).
+export type DecomposePart = {
+  part: string;
+  detail: string;
+};
+
+// A node in a simple top-to-bottom flowchart (the A2 "Flow Diagrams" shapes).
+// A decision shows its "yes" outcome as a side branch; the down-arrow is the "no" path.
+export type FlowNode =
+  | { kind: "start" | "end" | "process"; text: string }
+  | { kind: "decision"; text: string; yes: string; yesEnd?: boolean; no?: string };
+
+// A named formula (for the Angry Birds projectile-motion section).
+export type Formula = {
+  name: string;
+  expr: string; // shown as monospace
+  note?: string;
+};
+
 export type GameGuide = {
   intro: string; // one line framing the spec
   acceptance: string[]; // testable "the game is done when…" statements
+  decompose: DecomposePart[]; // break the problem into parts BEFORE any code (A1)
+  flow: FlowNode[]; // map the logic as a flowchart BEFORE any code (A2)
+  physics?: { intro: string; formulas: Formula[] }; // optional math (Angry Birds)
   build: BuildStep[]; // ordered steps with pseudocode
 };
 
@@ -29,6 +51,21 @@ export const GAME_GUIDES: Record<string, GameGuide> = {
       "While playing, moving the cursor off the whole board also counts as a fail.",
       "Reaching the GOAL while playing wins the game and reports how many walls were hit.",
       "A Reset control returns the game to idle and sets “walls hit” back to 0.",
+    ],
+    decompose: [
+      { part: "Draw the world", detail: "A fixed grid of cells — walls, safe path, one START, one GOAL. This layout is the single source of truth." },
+      { part: "Remember where we are", detail: "Two pieces of state: the game status (idle / playing / won / failed) and a walls-hit counter." },
+      { part: "React to the cursor", detail: "The only input is the cursor entering a cell — decide what that cell means right now." },
+      { part: "Guard the edges", detail: "Sliding off the board must count as hitting a wall, or players cheat by going around the outside." },
+      { part: "Talk back & restart", detail: "Show a message for every status, and offer a Reset back to idle." },
+    ],
+    flow: [
+      { kind: "start", text: "Cursor enters a cell" },
+      { kind: "decision", text: "On START,\nnot playing?", yes: 'status = "playing"' },
+      { kind: "decision", text: "On GOAL,\nplaying?", yes: 'status = "won" 🎉', yesEnd: true },
+      { kind: "decision", text: "Hit WALL or\nleft board?", yes: 'status = "failed"\nwallsHit + 1' },
+      { kind: "process", text: "Path cell → do nothing" },
+      { kind: "end", text: "Show the message for the status" },
     ],
     build: [
       {
@@ -97,6 +134,22 @@ message = {
       "Touching a pipe or the ground ends the run and the message shows how many pipes were cleared.",
       "Best score is remembered and updates whenever a run beats it.",
       "Reset returns the game to idle with Score 0 (Best is unchanged).",
+    ],
+    decompose: [
+      { part: "Turn the world into numbers", detail: "The bird is a height + a vertical speed; each pipe is an x-position and a gap. Tuning constants set the 'feel'." },
+      { part: "One input, two jobs", detail: "A tap starts the game from idle AND gives the bird an upward kick." },
+      { part: "A forever loop", detail: "Every frame: apply gravity, move the bird, slide the pipes left, and spawn new ones." },
+      { part: "Score & collide", detail: "Add a point for each pipe fully passed; end the run on any pipe / ground / ceiling hit." },
+      { part: "Remember & restart", detail: "Keep the best score across runs; Reset returns to idle with score 0." },
+    ],
+    flow: [
+      { kind: "start", text: "Idle — waiting for the first flap" },
+      { kind: "decision", text: "Flap\npressed?", yes: "birdVel = FLAP_VELOCITY\n(start if idle)" },
+      { kind: "process", text: "Each frame:\nbirdVel += GRAVITY·dt\nbirdY += birdVel·dt" },
+      { kind: "process", text: "Move pipes left;\nspawn a new pipe when needed" },
+      { kind: "decision", text: "Fully\npassed a pipe?", yes: "score + 1" },
+      { kind: "decision", text: "Hit pipe,\nfloor, or roof?", yes: "game over\nbest = max(best, score)", yesEnd: true, no: "no ↺ loop" },
+      { kind: "end", text: "Reset → idle, score 0" },
     ],
     build: [
       {
@@ -180,6 +233,65 @@ on reset():
       "Clearing every pig wins the level; running out of birds with pigs remaining loses it.",
       "Reset restores 3 birds, 3 pigs, and the ready state.",
     ],
+    decompose: [
+      { part: "Build the world", detail: "A fixed slingshot anchor, a bird with position + velocity, pigs to clear, blocks to bounce off, and 3 birds in reserve." },
+      { part: "Aim by dragging", detail: "Measure how far and which way the player pulls the bird back from the anchor; clamp it so it can't over-stretch." },
+      { part: "Turn the pull into a launch", detail: "Convert the pull into a velocity — this is pure projectile physics (the formulas below)." },
+      { part: "Fly, bounce, pop", detail: "Each frame gravity pulls the bird down; check the ground, blocks, and pigs it might touch." },
+      { part: "Decide the outcome", detail: "When the shot settles: all pigs cleared → win; otherwise spend a bird, and lose when none remain." },
+      { part: "Reset the level", detail: "Restore 3 pigs, 3 birds, and the ready state." },
+    ],
+    flow: [
+      { kind: "start", text: "Bird ready on the sling" },
+      { kind: "decision", text: "Dragging\nthe bird?", yes: "pull = drag − anchor (clamp)\nshow trajectory preview" },
+      { kind: "decision", text: "Released?", yes: "ux,uy = K·(anchor − drag)\nstatus = flying" },
+      { kind: "process", text: "Each frame: vy += g·dt; move bird;\nbounce off blocks & ground" },
+      { kind: "decision", text: "Within a\npig's radius?", yes: "pop that pig 🐷" },
+      { kind: "decision", text: "Bird at rest\nor off-screen?", yes: "end the shot", no: "no ↺ loop" },
+      { kind: "decision", text: "All pigs\ncleared?", yes: "status = won 🎉", yesEnd: true },
+      { kind: "decision", text: "Birds\nleft = 0?", yes: "status = lost", yesEnd: true, no: "no → load next bird → ready" },
+      { kind: "end", text: "Reset → 3 birds, 3 pigs, ready" },
+    ],
+    physics: {
+      intro:
+        "The launch is textbook projectile motion. Everything starts from two points: the slingshot anchor A and the point D where you drag the bird to. (In this game A = (110, groundY − 78), gravity g = 1000 px/s², power factor K = 11, and the pull is clamped to MAX_PULL = 74 px.)",
+      formulas: [
+        {
+          name: "1 · Pull vector  (anchor → drag)",
+          expr: "pullX = D.x − A.x\npullY = D.y − A.y",
+          note: "How far, and which way, you drew the bird back. If its length is over MAX_PULL, scale it down to MAX_PULL.",
+        },
+        {
+          name: "2 · Pull distance  (how hard)",
+          expr: "d = √(pullX² + pullY²)      (≤ MAX_PULL)",
+          note: "A longer pull stores more power.",
+        },
+        {
+          name: "3 · Launch force  ux, uy",
+          expr: "ux = −K · pullX = K · (A.x − D.x)\nuy = −K · pullY = K · (A.y − D.y)",
+          note: "The bird fires the OPPOSITE way you pull: drag down-left → launch up-right. K turns pull-pixels into speed.",
+        },
+        {
+          name: "4 · Launch power  (initial speed)",
+          expr: "u = √(ux² + uy²) = K · d",
+        },
+        {
+          name: "5 · Shoot angle  (above horizontal)",
+          expr: "θ  = atan2(−uy, ux)\nθ° = θ · 180 / π",
+          note: "Screen y points down, so −uy is the 'up' amount. atan2 works in every direction with no divide-by-zero.",
+        },
+        {
+          name: "6 · Drop distance from gravity, after time t",
+          expr: "s = ½ · g · t²",
+          note: "How far below the straight aim-line gravity has pulled the bird. This 'sag' is what curves the shot into an arc.",
+        },
+        {
+          name: "7 · Full trajectory  (what the dotted preview plots)",
+          expr: "x(t) = A.x + ux · t\ny(t) = A.y + uy · t + ½ · g · t²",
+          note: "The game loop reaches this same path one small step at a time:  vy += g·dt;  y += vy·dt.",
+        },
+      ],
+    },
     build: [
       {
         title: "Model the scene",

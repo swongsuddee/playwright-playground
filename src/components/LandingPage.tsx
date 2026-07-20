@@ -57,13 +57,13 @@ export function LandingPage() {
       {/* Features */}
       <section className="lpSection">
         <div className="lpWrap">
-          <div className="lpSectionHead">
+          <div className="lpSectionHead" data-reveal>
             <h2 className="lpH2">What you’ll practice</h2>
             <p className="small" style={{ fontSize: 14 }}>Four building blocks of automated UI testing — each with interactive, realistic exercises.</p>
           </div>
           <div className="lpFeatureGrid">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="card" style={{ textAlign: "center", padding: 22 }}>
+            {FEATURES.map((f, i) => (
+              <div key={f.title} className="card" data-reveal style={{ textAlign: "center", padding: 22, ["--reveal-delay" as string]: `${i * 80}ms` }}>
                 <div style={{ display: "flex", justifyContent: "center" }}><MiniMascot accent={f.accent} size={64} /></div>
                 <h3 className="h2" style={{ marginTop: 10, fontSize: 16 }}>{f.title}</h3>
                 <p className="small">{f.text}</p>
@@ -76,7 +76,7 @@ export function LandingPage() {
       {/* CTA */}
       <section className="lpSection" style={{ paddingTop: 0 }}>
         <div className="lpWrap">
-          <div className="lpBand" style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow)", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
+          <div className="lpBand" data-reveal style={{ background: "var(--surface)", border: "1px solid var(--border)", boxShadow: "var(--shadow)", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 18, minWidth: 0 }}>
               <div style={{ flex: "0 0 auto" }}><MiniMascot accent="coral" size={72} /></div>
               <div style={{ minWidth: 0 }}>

@@ -89,6 +89,32 @@ const EDGES: [string, string][] = [
 
 const BY_ID: Record<string, TreeNode> = Object.fromEntries(NODES.map((n) => [n.id, n]));
 
+// BFS distance from the hub, so the entrance animation ripples outward.
+const RING: Record<string, number> = (() => {
+  const adj: Record<string, string[]> = {};
+  for (const [a, b] of EDGES) {
+    (adj[a] ||= []).push(b);
+    (adj[b] ||= []).push(a);
+  }
+  const ring: Record<string, number> = { core: 0 };
+  const queue = ["core"];
+  while (queue.length) {
+    const n = queue.shift()!;
+    for (const m of adj[n] || []) {
+      if (ring[m] == null) {
+        ring[m] = ring[n] + 1;
+        queue.push(m);
+      }
+    }
+  }
+  return ring;
+})();
+
+const STEP = 120; // ms per ring
+const nodeDelay = (id: string) => 60 + (RING[id] ?? 0) * STEP;
+const edgeDelay = (a: string, b: string) =>
+  Math.max(RING[a] ?? 0, RING[b] ?? 0) * STEP; // draw an edge as its far node arrives
+
 // Coordinate-space design size; the board scales to fit but keeps this aspect.
 const VW = 1300;
 const VH = 900;
@@ -142,6 +168,7 @@ export function SkillTree() {
               const pb = place(b, w, h);
               const active = hovered === aId || hovered === bId;
               const locked = Boolean(b.locked);
+              const delay = edgeDelay(aId, bId);
               return (
                 <path
                   key={`${aId}-${bId}`}
@@ -149,7 +176,12 @@ export function SkillTree() {
                   d={curve(pa, pb)}
                   data-active={active}
                   data-locked={locked}
-                  style={active ? { stroke: b.color } : undefined}
+                  data-draw={locked ? undefined : true}
+                  pathLength={locked ? undefined : 1}
+                  style={{
+                    ["--edge-delay" as string]: `${delay}ms`,
+                    ...(active ? { stroke: b.color } : null),
+                  }}
                 />
               );
             })}
@@ -179,7 +211,12 @@ export function SkillTree() {
               "data-kind": n.kind,
               "data-locked": n.locked ? true : undefined,
               "data-dim": dim ? true : undefined,
-              style: { left: p.x, top: p.y, ["--node" as string]: n.color },
+              style: {
+                left: p.x,
+                top: p.y,
+                ["--node" as string]: n.color,
+                ["--node-delay" as string]: `${nodeDelay(n.id)}ms`,
+              },
               onMouseEnter: () => setHovered(n.id),
               onMouseLeave: () => setHovered((cur) => (cur === n.id ? null : cur)),
               onFocus: () => setHovered(n.id),
