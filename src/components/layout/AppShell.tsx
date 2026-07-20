@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { ScrollReveal } from "@/components/ScrollReveal";
 
 export default function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -12,6 +13,9 @@ export default function AppShell({ children }: { children: ReactNode }) {
 
       {/* Main grid */}
       <div className="appGrid">{children}</div>
+
+      {/* Reveal-on-scroll for [data-reveal] elements (respects reduced motion) */}
+      <ScrollReveal />
     </div>
   );
 }
